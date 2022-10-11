@@ -13,7 +13,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(classes = AccountServiceApplication.class)
 class AccountServiceTest {
@@ -22,7 +23,20 @@ class AccountServiceTest {
     private AccountService accountService;
 
     @Test
+    void saveOrUpdate() {
+        Account account = createAccount();
+        Account savedAccount = accountService.saveOrUpdate(account);
+        assertEquals(account, savedAccount);
+    }
+
+    @Test
     void findById() {
+        Account account = createAccount();
+        //TODO
+        assertNotNull(account);
+    }
+
+    private static Account createAccount() {
         Account account = new Account();
         account.setName("Nikolas");
         account.setDescription("Some description");
@@ -41,10 +55,7 @@ class AccountServiceTest {
                 new Income("Dividends", new BigDecimal("2000"), "USD", LocalDateTime.of(2020, 12, 2, 13, 35, 54) )
         );
         account.setIncomes(incomes);
+        return account;
     }
 
-    @Test
-    void saveOrUpdate() {
-        
-    }
 }
