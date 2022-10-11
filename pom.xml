@@ -13,11 +13,14 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>account-service</name>
 	<description>account-service</description>
+
 	<properties>
 		<java.version>17</java.version>
 		<spring-cloud.version>2021.0.4</spring-cloud.version>
 		<snakeyaml.version>1.32</snakeyaml.version>
+		<jackson-databind>2.14.0</jackson-databind>
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -39,6 +42,7 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
