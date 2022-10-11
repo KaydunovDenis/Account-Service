@@ -20,13 +20,13 @@ public class AccountService {
         return repository.findById(id).orElseThrow(AccountMissingException::new);
     }
 
-    //todo
-    public Account findByName(){
-        return null;
+    public Account findByName(String name){
+        return repository.findByName(name);
     }
 
 
     public Account saveOrUpdate(Account account) {
+        //TODO добавить проверку уникальности по имени
         return repository.save(account);
     }
 }

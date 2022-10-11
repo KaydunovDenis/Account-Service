@@ -1,5 +1,7 @@
 package com.github.kaydunovdenis.accountservice.model;
 
+import org.springframework.data.annotation.Id;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -14,11 +16,10 @@ import java.util.List;
 public class Account {
 
     /**
-     * @Id private String id;
-     * <p>
      * If we don’t specify anything, MongoDB will generate an _id field while creating the document.
      */
-
+    @Id
+    private String id;
     private String name;
     private String description;
     private LocalDate dateLastSeen;

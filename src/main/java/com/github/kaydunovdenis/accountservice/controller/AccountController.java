@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("account")
+@RequestMapping("/account")
 public class AccountController {
 
     private final AccountService service;
@@ -24,6 +24,7 @@ public class AccountController {
     public AccountController(AccountService service) {
         this.service = service;
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Account> getAccountById(@PathVariable String id) throws AccountMissingException {
@@ -47,6 +48,8 @@ public class AccountController {
 
     @PostMapping()
     public ResponseEntity<Account> createAccount (@RequestBody Account account) {
+       //todo если уже есть, и это не он, то бросить ошибку что имя занято
+
         return ResponseEntity.status(HttpStatus.OK).body(service.saveOrUpdate(account));
     }
 
