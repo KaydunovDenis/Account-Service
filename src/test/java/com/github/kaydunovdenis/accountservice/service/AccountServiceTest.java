@@ -1,6 +1,7 @@
 package com.github.kaydunovdenis.accountservice.service;
 
 import com.github.kaydunovdenis.accountservice.AccountServiceApplication;
+import com.github.kaydunovdenis.accountservice.exception.AccountMissingException;
 import com.github.kaydunovdenis.accountservice.model.Account;
 import com.github.kaydunovdenis.accountservice.model.Expanse;
 import com.github.kaydunovdenis.accountservice.model.Income;
@@ -14,7 +15,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest(classes = AccountServiceApplication.class)
 class AccountServiceTest {
@@ -24,16 +26,33 @@ class AccountServiceTest {
 
     @Test
     void saveOrUpdate() {
+        //Given
         Account account = createAccount();
+        //When
         Account savedAccount = accountService.saveOrUpdate(account);
+        //Then
         assertEquals(account, savedAccount);
     }
 
     @Test
     void findById() {
+        //Given
         Account account = createAccount();
+        account.setId("1");
         //TODO
-        assertNotNull(account);
+        Throwable exception1 = assertThrows(AccountMissingException.class, () ->
+                accountService.findById("1")
+        );
+        assertEquals("some message", exception1.getMessage());
+
+        //when
+        accountService.saveOrUpdate(account);
+        Throwable exception2 = assertThrows(AccountMissingException.class, () -> {
+                    Account actualAccount = accountService.findById("1");
+                    assertEquals(account, actualAccount);
+                }
+        );
+        assertNull(exception2);
     }
 
     private static Account createAccount() {
@@ -50,9 +69,9 @@ class AccountServiceTest {
         account.setExpanses(expanses);
 
         List<Income> incomes = List.of(
-                new Income("Salary", new BigDecimal("2000"), "USD", LocalDateTime.of(2020, 12, 2, 2, 35, 5) ),
-                new Income("Salary", new BigDecimal("2000"), "USD", LocalDateTime.of(2020, 11, 1, 1, 21, 12) ),
-                new Income("Dividends", new BigDecimal("2000"), "USD", LocalDateTime.of(2020, 12, 2, 13, 35, 54) )
+                new Income("Salary", new BigDecimal("2000"), "USD", LocalDateTime.of(2020, 12, 2, 2, 35, 5)),
+                new Income("Salary", new BigDecimal("2000"), "USD", LocalDateTime.of(2020, 11, 1, 1, 21, 12)),
+                new Income("Dividends", new BigDecimal("2000"), "USD", LocalDateTime.of(2020, 12, 2, 13, 35, 54))
         );
         account.setIncomes(incomes);
         return account;
